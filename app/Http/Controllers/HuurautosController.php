@@ -9,7 +9,7 @@ class HuurautosController extends Controller
 {
     public function index(){
         $data = DB::table('huurautos')
-        ->select('automerk', 'autotype', 'autobouwjaar')  
+        ->select('autonummer', 'automerk', 'autotype', 'autobouwjaar')  
         ->whereIn('autobouwjaar', [2001, 2003, 2006])  
         ->orderBy('automerk', 'asc')
         ->orderBy('autotype', 'asc')
@@ -38,4 +38,24 @@ class HuurautosController extends Controller
         return redirect('/huurautos');
     }
 
+    public function edit($id){
+        $huurauto = DB::table('huurautos')->where('autonummer', $id)->first();
+        return view('huurautos.edit',['huurauto'=>$huurauto]);
+    }
+
+    public function update($id, Request $request){
+        $this->validate($request, [
+            'autonummer' => 'required|integer',
+            'automerk' => 'required',
+            'autotype' => 'required',
+            'autobouwjaar' => 'required|integer|between:1900,2021',
+            ]);
+        DB::table('huurautos')->where('autonummer', $id)->update([
+            'autonummer' => $request->autonummer,
+            'automerk' => $request->automerk,
+            'autotype' => $request->autotype,
+            'autobouwjaar' => $request->autobouwjaar,
+            ]);
+        return redirect('/huurautos');
+    }        
 }

@@ -21,3 +21,6 @@ Route::get('/', function () {
 Route::get('/huurautos', [HuurautosController::class, 'index']);
 Route::get('/huurautos/create', [HuurautosController::class, 'create']);
 Route::post('/huurautos', [HuurautosController::class, 'store'])->name('store');
+Route::get('/huurautos/{id}/edit', [HuurautosController::class, 'edit'])->name('edit');
+Route::put('/huurautos/{id}', [HuurautosController::class, 'update'])->name('update');
+Route::delete('/huurautos', [HuurautosController::class, 'destroy'])->name('destroy');
